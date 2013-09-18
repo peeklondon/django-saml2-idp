@@ -10,7 +10,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.core.urlresolvers import reverse
 from django.shortcuts import render, redirect
 from django.template import RequestContext
-from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt
+from django.views.decorators.csrf import csrf_view_exempt, csrf_response_exempt, csrf_exempt
 # saml2idp app imports:
 import saml2idp_metadata
 import exceptions
