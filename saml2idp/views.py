@@ -18,7 +18,7 @@ import metadata
 import registry
 import xml_signing
 
-
+@csrf_exempt
 def _generate_response(request, processor):
     """
     Generate a SAML response using processor and return it in the proper Django
@@ -31,7 +31,7 @@ def _generate_response(request, processor):
 
     return render(request, 'saml2idp/login.html', tv)
 
-
+@csrf_exempt
 def xml_response(request, template, tv):
     return render(request, template, tv, content_type="application/xml")
 
@@ -51,8 +51,8 @@ def login_begin(request, *args, **kwargs):
     request.session['RelayState'] = source['RelayState']
     return redirect('login_process')
 
-
 @login_required
+@csrf_exempt
 def login_init(request, resource, **kwargs):
     """
     Initiates an IdP-initiated link to a simple SP resource/target URL.
@@ -76,7 +76,7 @@ def login_init(request, resource, **kwargs):
 
 
 @login_required
-@csrf_response_exempt
+@csrf_exempt
 def login_process(request):
     """
     Processor-based login continuation.
@@ -118,7 +118,7 @@ def slo_logout(request):
     tv = {}
     return render('saml2idp/logged_out.html', tv)
 
-
+@csrf_exempt
 def descriptor(request):
     """
     Replies with the XML Metadata IDSSODescriptor.
