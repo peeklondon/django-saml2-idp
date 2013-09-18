@@ -199,14 +199,13 @@ class Processor(object):
         is valid, according to settings. Sub-classes should override this and
         throw a CannotHandleAssertion Exception if the validation does not succeed.
         """
-        # acs_url = self._request_params['ACS_URL']
-        # for name, sp_config in saml2idp_metadata.SAML2IDP_REMOTES.items():
-        #     if acs_url == sp_config['acs_url']:
-        #         self._sp_config = sp_config
-        #         return
-        # msg = "Could not find ACS url '%s' in SAML2IDP_REMOTES setting." % acs_url
-        # raise exceptions.CannotHandleAssertion(msg)
-        return
+        acs_url = self._request_params['ACS_URL']
+        for name, sp_config in saml2idp_metadata.SAML2IDP_REMOTES.items():
+            if acs_url == sp_config['acs_url']:
+                self._sp_config = sp_config
+                return
+        msg = "Could not find ACS url '%s' in SAML2IDP_REMOTES setting." % acs_url
+        raise exceptions.CannotHandleAssertion(msg)
 
     def _validate_user(self):
         """

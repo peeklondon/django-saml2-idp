@@ -43,10 +43,11 @@ def find_processor(request):
     """
     for name, sp_config in saml2idp_metadata.SAML2IDP_REMOTES.items():
         proc = get_processor(sp_config['processor'])
+        logger.debug('Looking for processor: %s' % proc)
         try:
             if proc.can_handle(request):
                 return proc
         except exceptions.CannotHandleAssertion, e:
             # Log these, but keep looking.
-            logger.debug('%s %s' % (proc, e))
+            logger.debug('Couldn\'t find processor: %s %s' % (proc, e))
     raise exceptions.CannotHandleAssertion('None of the processors in SAML2IDP_REMOTES could handle this request.')
