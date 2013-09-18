@@ -36,7 +36,7 @@ def xml_response(request, template, tv):
     return render(request, template, tv, content_type="application/xml")
 
 
-@csrf_view_exempt
+@csrf_exempt
 def login_begin(request, *args, **kwargs):
     """
     Receives a SAML 2.0 AuthnRequest from a Service Provider and
@@ -88,7 +88,7 @@ def login_process(request):
     return _generate_response(request, proc)
 
 
-@csrf_view_exempt
+@csrf_exempt
 def logout(request):
     """
     Allows a non-SAML 2.0 URL to log out the user and
@@ -101,7 +101,7 @@ def logout(request):
 
 
 @login_required
-@csrf_view_exempt
+@csrf_exempt
 def slo_logout(request):
     """
     Receives a SAML 2.0 LogoutRequest from a Service Provider,
