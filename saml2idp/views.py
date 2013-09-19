@@ -17,6 +17,7 @@ import exceptions
 import metadata
 import registry
 import xml_signing
+import urllib
 
 @csrf_exempt
 def _generate_response(request, processor):
@@ -47,7 +48,9 @@ def login_begin(request, *args, **kwargs):
     else:
         source = request.GET
     # Store these values now, because Django's login cycle won't preserve them.
-    request.session['SAMLRequest'] = source['SAMLRequest']
+    preservePlus = urllib.quote_plus(source['SAMLRequest'])[:-6]
+    preservePlus += "=" * ((4 - len(preservePlus) % 4) % 4)
+    request.session['SAMLRequest'] = preservePlus
     request.session['RelayState'] = source['RelayState']
     return redirect('login_process')
 
