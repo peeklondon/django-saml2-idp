@@ -48,9 +48,12 @@ def login_begin(request, *args, **kwargs):
     else:
         source = request.GET
     # Store these values now, because Django's login cycle won't preserve them.
-    preservePlus = urllib.quote_plus(source['SAMLRequest'])[:-6]
-    preservePlus += "=" * ((4 - len(preservePlus) % 4) % 4)
+    preservePlus = urllib.quote_plus(source['SAMLRequest'])[:-3]
+    preservePlus += "=="
     request.session['SAMLRequest'] = preservePlus
+    #print '- - - %s - - -' % source['SAMLRequest']
+    #print '-#-#- %s -#-#-' % preservePlus
+    #request.session['SAMLRequest'] = source['SAMLRequest']
     request.session['RelayState'] = source['RelayState']
     return redirect('login_process')
 
@@ -85,6 +88,7 @@ def login_process(request):
     Processor-based login continuation.
     Presents a SAML 2.0 Assertion for POSTing back to the Service Provider.
     """
+    print '------ login_process --------'
     #reg = registry.ProcessorRegistry()
     logging.debug("Request: %s" % request)
     proc = registry.find_processor(request)

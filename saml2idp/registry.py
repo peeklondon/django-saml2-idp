@@ -43,7 +43,6 @@ def find_processor(request):
     """
     for name, sp_config in saml2idp_metadata.SAML2IDP_REMOTES.items():
         proc = get_processor(sp_config['processor'])
-        logger.debug('Looking for processor: %s' % proc)
         try:
             if proc.can_handle(request):
                 return proc

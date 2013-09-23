@@ -122,8 +122,10 @@ class Processor(object):
         """
         Retrieves the _saml_request AuthnRequest from the _django_request.
         """
-        self._saml_request = self._django_request.session['SAMLRequest']
-        self._relay_state = self._django_request.session['RelayState']
+        #self._saml_request = self._django_request.session['SAMLRequest']
+	#self._relay_state = self._django_request.session['RelayState']
+	self._saml_request = self._django_request.POST['SAMLRequest']
+        self._relay_state = self._django_request.POST['RelayState']
 
     def _format_assertion(self):
         """
@@ -160,9 +162,11 @@ class Processor(object):
             raise Exception('RequestXML is not valid XML; '
                             'it may need to be decoded or decompressed.')
         soup = BeautifulStoneSoup(self._request_xml)
+	print '- - - SOUP: %s - - -' % soup
         request = soup.findAll()[0]
         params = {}
         params['ACS_URL'] = request['assertionconsumerserviceurl']
+	print '- - - assertionconsumerserviceurl: %s - - -' % request['assertionconsumerserviceurl']
         params['REQUEST_ID'] = request['id']
         params['DESTINATION'] = request.get('destination', '')
         params['PROVIDER_NAME'] = request.get('providername', '')
@@ -265,4 +269,4 @@ class Processor(object):
             'DESTINATION': '',
             'PROVIDER_NAME': '',
         }
-        self._relay_state = url
+      
